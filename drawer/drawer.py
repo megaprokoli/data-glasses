@@ -7,5 +7,5 @@ class Drawer(ABC):
         self._content = content
 
     @abstractmethod
-    def draw(self):
+    def draw(self, disp):
         pass
