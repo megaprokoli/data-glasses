@@ -7,8 +7,8 @@ class Oled:
         self.__draw_strategy = drawer
 
         self.disp.begin()
-        self.disp.clear()
-        self.disp.display()
+        # self.disp.clear()
+        # self.disp.display()
 
     def draw(self):
         pass

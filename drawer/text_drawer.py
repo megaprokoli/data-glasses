@@ -10,6 +10,11 @@ class TextDrawer(Drawer):
         super().__init__(content)
 
     def draw(self, disp):
+        print("drawing text ({})".format(self._content))
+
+        disp.clear()
+        disp.display()
+
         width = disp.width
         height = disp.height
         image = Image.new('1', (width, height))
