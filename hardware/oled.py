@@ -7,11 +7,11 @@ class Oled:
         self.__draw_strategy = drawer
 
         self.disp.begin()
-        # self.disp.clear()
-        # self.disp.display()
+        self.disp.clear()
+        self.disp.display()
 
     def draw(self):
-        pass
+        self.__draw_strategy.draw(self.disp)
 
     def set_draw_strategy(self, drawer):
         self.__draw_strategy = drawer
