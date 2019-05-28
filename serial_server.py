@@ -1,24 +1,24 @@
-import pickle
-import socket
-
-from drawer.text_drawer import TextDrawer
 from hardware.oled import Oled
+from server.bluetooth_server import BluetoothServer
+from content.content_api import ContentAPI
 
 
-oled = Oled(drawer=TextDrawer("started"))
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+oled = Oled(drawer=ContentAPI.get_content_type("text").drawer("started v0.2"))  # TODO improve
+server = BluetoothServer()
 
-server.bind(("127.0.0.1", 5300))
+server.start()
 oled.draw()
 
 print("running")
 
+s_gen = server.run_gen()
+
 while True:
-    server.listen(0)
-    client, addr = server.accept()
 
-    resp = client.makefile(mode="rb", buffering=1024)
+    if not server.running:
+        break
 
-    obj = pickle.load(resp)
-
-    print(obj)
+    for drawer in s_gen:
+        # print(drawer)
+        oled.set_draw_strategy(drawer)
+        oled.draw()
