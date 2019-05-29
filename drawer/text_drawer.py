@@ -11,6 +11,8 @@ class TextDrawer(Drawer):
 
         self._row_len = 21
         self._max_rows = 4
+        self._y_axis_threshold = 20
+        self._line_padding = 1
         self._prepared = None
 
     def _prepare(self):
@@ -27,8 +29,19 @@ class TextDrawer(Drawer):
 
         self._prepared = result
 
+    def _get_line(self, line):
+        if line > self._max_rows:
+            line = self._max_rows
+        x = 0
+        y = ((self._y_axis_threshold - self._max_rows * self._line_padding) / self._max_rows) * line
+
+        return x, int(y)
+
     def draw(self, disp):
         print("drawing text ({})".format(self._content))
+
+        if self._prepared is None:  # if somehow prepared before
+            self._prepare()
 
         disp.clear()
         disp.display()
@@ -58,7 +71,10 @@ class TextDrawer(Drawer):
         draw.rectangle((0, 0, width, height), outline=0, fill=0)
 
         # Write two lines of text.
-        draw.text((x, top), self._content, font=font, fill=255)
+
+        for i, text in enumerate(self._prepared):
+            line = self._get_line(i)
+            draw.text(line, text, font=font, fill=255)
 
         # Display image.
         disp.image(image)
