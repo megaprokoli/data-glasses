@@ -24,16 +24,21 @@ class TextDrawer(Drawer):
         for i in range(0, self._max_rows):
             result.append(content[last_pointer:cont_pointer])
 
-            last_pointer = cont_pointer + 1
+            last_pointer = cont_pointer + 1     # TODO fail maybe here
             cont_pointer += self._row_len
 
         self._prepared = result
 
-    def _get_line(self, line):
-        if line > self._max_rows:
-            line = self._max_rows
+    def _get_line(self, line):  # TODO dynamic
+        # if line > self._max_rows:
+        #     line = self._max_rows
+
+        m = {1: 0,
+             2: 8,
+             3: 15,
+             4: 22}
         x = 0
-        y = ((self._y_axis_threshold - self._max_rows * self._line_padding) / self._max_rows) * line
+        y = m[line]# ((self._y_axis_threshold - self._max_rows * self._line_padding) / self._max_rows) * line
 
         return x, int(y)
 
