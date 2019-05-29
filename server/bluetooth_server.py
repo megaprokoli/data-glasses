@@ -4,12 +4,12 @@ from content.content_api import ContentAPI
 
 
 class BluetoothServer:  # TODO bluetooth
-    def __init__(self):
+    def __init__(self, host, port):
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._protocol = None
         self.running = False
 
-        self._socket.bind(("127.0.0.1", 5300))
+        self._socket.bind((host, port))
 
     def _read_header(self, client):
         # packet structure

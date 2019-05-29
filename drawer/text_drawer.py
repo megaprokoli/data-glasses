@@ -9,6 +9,24 @@ class TextDrawer(Drawer):
     def __init__(self, content):
         super().__init__(content)
 
+        self._row_len = 21
+        self._max_rows = 4
+        self._prepared = None
+
+    def _prepare(self):
+        content = self._content
+        result = []
+        cont_pointer = self._row_len
+        last_pointer = 0
+
+        for i in range(0, self._max_rows):
+            result.append(content[last_pointer:cont_pointer])
+
+            last_pointer = cont_pointer + 1
+            cont_pointer += self._row_len
+
+        self._prepared = result
+
     def draw(self, disp):
         print("drawing text ({})".format(self._content))
 

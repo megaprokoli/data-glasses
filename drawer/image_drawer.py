@@ -5,5 +5,5 @@ class ImageDrawer(Drawer):
     def __init__(self, content):
         super().__init__(content)
 
-    def draw(self):
+    def draw(self, disp):
         pass
