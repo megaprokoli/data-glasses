@@ -15,4 +15,3 @@ class Oled:
 
     def set_draw_strategy(self, drawer):
         self.__draw_strategy = drawer
-git
