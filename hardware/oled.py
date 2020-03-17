@@ -1,9 +1,9 @@
-import adafruit_ssd1306
+import Adafruit_SSD1306
 
 
 class Oled:
     def __init__(self, drawer):
-        self.disp = adafruit_ssd1306.SSD1306_128_32(rst=None)
+        self.disp = Adafruit_SSD1306.SSD1306_128_32(rst=None)
         self.__draw_strategy = drawer
 
         self.disp.begin()
