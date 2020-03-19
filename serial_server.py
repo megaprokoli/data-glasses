@@ -4,7 +4,7 @@ from content.content_api import ContentAPI
 
 
 oled = Oled(drawer=ContentAPI.get_content_type("text").drawer("started v0.2"))  # TODO improve
-server = BluetoothServer()
+server = BluetoothServer("192.168.2.121", 5300, verbose=True)
 
 server.start()
 oled.draw()
@@ -22,3 +22,5 @@ while True:
         # print(drawer)
         oled.set_draw_strategy(drawer)
         oled.draw()
+
+# TODO cleanup display on exit

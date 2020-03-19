@@ -1,7 +1,7 @@
 from recv_protocols.recv_protocol import RecvProtocol
 
 
-class TextProtocol(RecvProtocol):
+class ImageProtocol(RecvProtocol):
     def __init__(self, socket, client_addr):
         super().__init__(socket, client_addr)
 
