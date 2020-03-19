@@ -3,6 +3,7 @@ import pickle
 
 from recv_protocols.recv_protocol import RecvProtocol
 from content.content_api import ContentAPI
+import specs
 
 
 class BluetoothServer:  # TODO bluetooth
@@ -11,7 +12,8 @@ class BluetoothServer:  # TODO bluetooth
         self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._protocol = None
         self._server_functions = {"ping": self.__ping,
-                                  "types": self.__content_types}
+                                  "types": self.__content_types,
+                                  "specs": self.__sys_specs}
         self.running = False
 
         self._socket.bind((addr, port))
@@ -44,17 +46,23 @@ class BluetoothServer:  # TODO bluetooth
 
         return drawer_id, content_len
 
-    def __ping(self, client):   # doesnt need to do anything client uses b'ack' from read header
-        pass
-
-    def __content_types(self, client):
-        print("sending types")
-        types = ContentAPI.available_content_types()
-        serialized = pickle.dumps(types)
+    def __handle_sfunc_request(self, client, obj):
+        serialized = pickle.dumps(obj)
 
         client.send(str(len(serialized)).encode())
         client.recv(3)  # wait for ack
         client.send(serialized)
+
+    def __ping(self, client):   # doesnt need to do anything client uses b'ack' from read header
+        pass
+
+    def __sys_specs(self, client):
+        sp = specs.DISP_DIMENSIONS
+        self.__handle_sfunc_request(client, sp)
+
+    def __content_types(self, client):
+        types = ContentAPI.available_content_types()
+        self.__handle_sfunc_request(client, types)
 
     def is_server_func(self, id):
         return id in self._server_functions.keys()
@@ -66,16 +74,11 @@ class BluetoothServer:  # TODO bluetooth
         self.running = False
 
     def run_gen(self):
-        # if not self.initialized:
-        #     self.stop()
-        #     # TODO raise exception
-        #     return
-
         while self.running:
             self._socket.listen(0)
             client, addr = self._socket.accept()
 
-            header = self._read_header(client)  # TODO sys info and ping
+            header = self._read_header(client)
 
             if self._verbose:
                 print("{} | id: {} length: {}".format(addr, header[0], header[1]))
